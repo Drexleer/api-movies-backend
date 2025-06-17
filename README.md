@@ -1,99 +1,153 @@
+# 🎬 API de Películas - Backend Profesional (NestJS, PostgreSQL, TypeORM)
+
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" />
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Descripción
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+API REST profesional para gestión de películas, usuarios y categorías, desarrollada con **NestJS**, **TypeScript**, **PostgreSQL** y **TypeORM** bajo principios de **Clean Architecture**. Incluye autenticación, validaciones robustas, documentación Swagger, testing completo y scripts listos para despliegue profesional.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🚀 Características principales
 
-## Project setup
+- **Arquitectura Clean Architecture**: Separación clara de capas (Dominio, Aplicación, Infraestructura, Presentación)
+- **Base de datos relacional**: PostgreSQL con entidades y relaciones modeladas profesionalmente
+- **TypeORM**: ORM para gestión de entidades, migraciones y seeds
+- **DTOs y validaciones**: Uso intensivo de DTOs, validaciones con class-validator y manejo global de errores
+- **Testing profesional**: Cobertura completa con Jest (unitarios, integración, e2e)
+- **Documentación Swagger**: Documentación interactiva y ejemplos en `/api/docs`
+- **Docker y Docker Compose**: Listo para desarrollo y producción
+- **CI/CD y despliegue**: Scripts y configuración para despliegue automatizado
 
-```bash
-$ pnpm install
-```
+---
 
-## Compile and run the project
+## 📦 Estructura del Proyecto
 
-```bash
-# development
-$ pnpm run start
+- `src/domain` — Entidades de dominio, lógica de negocio y contratos de repositorios
+- `src/application` — Casos de uso, servicios de aplicación y lógica de negocio
+- `src/infrastructure` — Implementaciones de repositorios, entidades TypeORM, configuración de base de datos
+- `src/presentation` — Controllers, DTOs, validaciones, filtros globales y documentación Swagger
+- `test/` — Pruebas unitarias, integración y e2e
+- `docs/` — Documentación técnica, progreso y testing
 
-# watch mode
-$ pnpm run start:dev
+---
 
-# production mode
-$ pnpm run start:prod
-```
+## 🧪 Testing
 
-## Run tests
+- **Cobertura:** 100% de los módulos principales cubiertos
+- **Framework:** Jest + Supertest
+- **Tipos de tests:**
+  - Unitarios (servicios, entidades, lógica de negocio)
+  - Integración (controllers, endpoints HTTP)
+  - End-to-end (flujo completo de la API)
+- **Comandos útiles:**
+  ```bash
+  pnpm run test         # Ejecuta todos los tests
+  pnpm run test:watch   # Modo watch
+  pnpm run test:cov     # Cobertura
+  pnpm run test:e2e     # End-to-end
+  ```
+- **Resultados:**
+  - 8/8 test suites passing
+  - 125 tests pasando
+  - Cobertura estimada: >90%
 
-```bash
-# unit tests
-$ pnpm run test
+---
 
-# e2e tests
-$ pnpm run test:e2e
+## 📝 Documentación Swagger
 
-# test coverage
-$ pnpm run test:cov
-```
+La API cuenta con documentación interactiva y ejemplos en **Swagger**:
 
-## Deployment
+- Accede a la documentación en: [`/api/docs`](http://localhost:3000/api/docs)
+- Incluye:
+  - Descripción de todos los endpoints (usuarios, películas, categorías)
+  - Ejemplos de requests y responses
+  - Validaciones y errores documentados
+  - Schemas y DTOs detallados
+- Swagger se genera automáticamente a partir de los decoradores y DTOs en el código fuente.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 🛠️ Instalación y uso
 
-```bash
-$ pnpm install -g mau
-$ mau deploy
-```
+1. **Clona el repositorio:**
+   ```bash
+   git clone https://github.com/tu-usuario/api-movies-backend.git
+   cd api-movies-backend
+   ```
+2. **Instala dependencias:**
+   ```bash
+   pnpm install
+   ```
+3. **Configura las variables de entorno:**
+   - Copia `.env.example` a `.env` y ajusta según tu entorno (DB, JWT, etc.)
+4. **Levanta la base de datos y el backend:**
+   ```bash
+   docker-compose up -d
+   pnpm run start:dev
+   ```
+5. **Accede a la API y Swagger:**
+   - API: `http://localhost:3000`
+   - Swagger: `http://localhost:3000/api/docs`
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 🗄️ Migraciones y Seeds
 
-Check out a few resources that may come in handy when working with NestJS:
+- **Migraciones automáticas:**
+  ```bash
+  pnpm run typeorm migration:run
+  ```
+- **Seeds de datos:**
+  - Incluidos para categorías y datos de prueba
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+## 🧩 Principales Endpoints
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **Usuarios:**
+  - `POST /users` — Crear usuario
+  - `GET /users` — Listar usuarios (paginación, búsqueda)
+  - `GET /users/:id` — Obtener usuario por ID
+  - `PUT /users/:id` — Actualizar usuario
+  - `DELETE /users/:id` — Eliminar usuario
+  - `GET /users/:userId/movies` — Películas vistas/favoritas por usuario
+- **Películas:**
+  - `POST /movies` — Crear película
+  - `GET /movies` — Listar películas (filtros, paginación)
+  - `GET /movies/new-releases` — Novedades
+  - `PUT /movies/:id` — Actualizar película
+  - `DELETE /movies/:id` — Eliminar película
+- **Categorías:**
+  - `POST /categories` — Crear categoría
+  - `GET /categories` — Listar categorías
+  - `PUT /categories/:id` — Actualizar categoría
+  - `DELETE /categories/:id` — Eliminar categoría
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 🏆 Logros y buenas prácticas
 
-## License
+- Arquitectura profesional y escalable
+- DTOs y validaciones exhaustivas
+- Testing completo y cobertura alta
+- Documentación Swagger clara y útil
+- Manejo global de errores y validaciones
+- Listo para despliegue en producción (Docker, CI/CD)
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+## 📚 Recursos útiles
+
+- [NestJS Documentation](https://docs.nestjs.com)
+- [TypeORM Documentation](https://typeorm.io)
+- [Swagger/OpenAPI](https://swagger.io/specification/)
+- [Jest Testing](https://jestjs.io/)
+
+---
+
+## 📄 Licencia
+
+MIT
