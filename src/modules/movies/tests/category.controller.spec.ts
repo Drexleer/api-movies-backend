@@ -5,7 +5,7 @@ import { CategoryController } from '../presentation/category.controller';
 import { CategoryService } from '../application/category.service';
 import { CreateCategoryDto } from '../dto/create-category.dto';
 import { UpdateCategoryDto } from '../dto/update-category.dto';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, ConflictException } from '@nestjs/common';
 
 describe('CategoryController (Integration)', () => {
   let app: INestApplication;
@@ -94,13 +94,13 @@ describe('CategoryController (Integration)', () => {
 
     it('should return 409 when category name already exists', async () => {
       categoryService.create.mockRejectedValue(
-        new Error('Category with name Drama already exists'),
+        new ConflictException('Category with name Drama already exists'),
       );
 
       await request(app.getHttpServer())
         .post('/categories')
         .send(createCategoryDto)
-        .expect(500); // Will be 500 because we're throwing a generic Error, not ConflictException
+        .expect(409); // Ahora espera 409 porque lanzamos ConflictException
     });
   });
 

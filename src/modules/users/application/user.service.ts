@@ -196,21 +196,11 @@ export class UserService {
 
   // Métodos privados para mapeo
   private mapUserToResponseDto(user: User): UserResponseDto {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...rest } = user;
     return {
-      id: user.id as number,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      dateOfBirth: user.dateOfBirth,
-      avatar: user.avatar,
-      isActive: user.isActive,
-      fullName: user.fullName,
-      age: user.age ?? undefined,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-      password: user.password, // Se excluirá automáticamente
-    };
+      ...rest,
+    } as UserResponseDto;
   }
 
   private mapUserMovieToResponseDto(
