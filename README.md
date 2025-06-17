@@ -4,9 +4,24 @@
   <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" />
 </p>
 
-## Descripción
+---
 
-API REST profesional para gestión de películas, usuarios y categorías, desarrollada con **NestJS**, **TypeScript**, **PostgreSQL** y **TypeORM** bajo principios de **Clean Architecture**. Incluye autenticación, validaciones robustas, documentación Swagger, testing completo y scripts listos para despliegue profesional.
+## ⚡ Requisitos para la prueba técnica
+
+- **Variables de entorno:**
+  - Copia el archivo `.env.example` a `.env` y completa los valores según tu entorno. Los principales son:
+    - `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME`
+    - `JWT_SECRET`, `JWT_EXPIRES_IN`
+    - Otros según configuración de correo, entorno, etc.
+- **Base de datos:**
+  - Debes tener PostgreSQL corriendo localmente y crear la base de datos indicada en `.env`.
+  - Ejecuta las migraciones y seeds si es necesario.
+- **Instalación:**
+  - Instala dependencias con `pnpm install`.
+  - Levanta el backend con `pnpm run start:dev`.
+- **Documentación y pruebas:**
+  - Accede a Swagger en `http://localhost:3000/api/docs` para ver y probar los endpoints.
+  - Si quieres probar los endpoints desde VS Code, instala la extensión **REST Client** y usa el archivo `api-test.http` incluido en el proyecto.
 
 ---
 
@@ -18,7 +33,6 @@ API REST profesional para gestión de películas, usuarios y categorías, desarr
 - **DTOs y validaciones**: Uso intensivo de DTOs, validaciones con class-validator y manejo global de errores
 - **Testing profesional**: Cobertura completa con Jest (unitarios, integración, e2e)
 - **Documentación Swagger**: Documentación interactiva y ejemplos en `/api/docs`
-- **Docker y Docker Compose**: Listo para desarrollo y producción
 - **CI/CD y despliegue**: Scripts y configuración para despliegue automatizado
 
 ---
@@ -31,6 +45,7 @@ API REST profesional para gestión de películas, usuarios y categorías, desarr
 - `src/presentation` — Controllers, DTOs, validaciones, filtros globales y documentación Swagger
 - `test/` — Pruebas unitarias, integración y e2e
 - `docs/` — Documentación técnica, progreso y testing
+- `api-test.http` — Archivo de pruebas para la extensión REST Client
 
 ---
 
@@ -83,9 +98,8 @@ La API cuenta con documentación interactiva y ejemplos en **Swagger**:
    ```
 3. **Configura las variables de entorno:**
    - Copia `.env.example` a `.env` y ajusta según tu entorno (DB, JWT, etc.)
-4. **Levanta la base de datos y el backend:**
+4. **Levanta el backend:**
    ```bash
-   docker-compose up -d
    pnpm run start:dev
    ```
 5. **Accede a la API y Swagger:**
@@ -145,9 +159,3 @@ La API cuenta con documentación interactiva y ejemplos en **Swagger**:
 - [TypeORM Documentation](https://typeorm.io)
 - [Swagger/OpenAPI](https://swagger.io/specification/)
 - [Jest Testing](https://jestjs.io/)
-
----
-
-## 📄 Licencia
-
-MIT

@@ -34,7 +34,6 @@
 
 ### ⚙️ **Configuración Inicial** (100% ✅)
 
-- [x] Docker y Docker Compose
 - [x] Variables de entorno
 - [x] TypeORM configurado
 - [x] Dependencias instaladas (Swagger, validación, etc.)
