@@ -220,7 +220,6 @@ export class MovieController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: 'Eliminar película',
     description:
@@ -233,15 +232,40 @@ export class MovieController {
     example: 1,
   })
   @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
+    status: HttpStatus.OK,
     description: 'Película eliminada exitosamente',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Película eliminada exitosamente',
+        },
+        movieId: {
+          type: 'number',
+          example: 1,
+        },
+        deletedAt: {
+          type: 'string',
+          format: 'date-time',
+          example: '2025-06-17T01:45:00Z',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Película no encontrada',
     type: ErrorResponseDto,
   })
-  async deleteMovie(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  async deleteMovie(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ message: string; movieId: number; deletedAt: string }> {
     await this.movieService.deleteMovie(id);
+    return {
+      message: 'Película eliminada exitosamente',
+      movieId: id,
+      deletedAt: new Date().toISOString(),
+    };
   }
 }

@@ -159,7 +159,6 @@ export class UserController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: 'Eliminar usuario',
     description:
@@ -172,16 +171,41 @@ export class UserController {
     example: 1,
   })
   @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
+    status: HttpStatus.OK,
     description: 'Usuario eliminado exitosamente',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Usuario eliminado exitosamente',
+        },
+        userId: {
+          type: 'number',
+          example: 1,
+        },
+        deletedAt: {
+          type: 'string',
+          format: 'date-time',
+          example: '2025-06-17T01:45:00Z',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Usuario no encontrado',
     type: ErrorResponseDto,
   })
-  async deleteUser(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  async deleteUser(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ message: string; userId: number; deletedAt: string }> {
     await this.userService.deleteUser(id);
+    return {
+      message: 'Usuario eliminado exitosamente',
+      userId: id,
+      deletedAt: new Date().toISOString(),
+    };
   }
 
   @Post(':id/movies/:movieId/mark-viewed')

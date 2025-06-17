@@ -8,7 +8,6 @@ import {
   Param,
   ParseIntPipe,
   HttpStatus,
-  HttpCode,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -125,7 +124,6 @@ export class CategoryController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: 'Eliminar categoría',
     description: 'Elimina una categoría del sistema',
@@ -137,8 +135,26 @@ export class CategoryController {
     example: 1,
   })
   @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
+    status: HttpStatus.OK,
     description: 'Categoría eliminada exitosamente',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Categoría eliminada exitosamente',
+        },
+        categoryId: {
+          type: 'number',
+          example: 1,
+        },
+        deletedAt: {
+          type: 'string',
+          format: 'date-time',
+          example: '2025-06-17T01:45:00Z',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -148,8 +164,15 @@ export class CategoryController {
     status: HttpStatus.CONFLICT,
     description: 'No se puede eliminar la categoría (conflicto)',
   })
-  async removeCategory(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.categoryService.remove(id);
+  async removeCategory(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ message: string; categoryId: number; deletedAt: string }> {
+    await this.categoryService.remove(id);
+    return {
+      message: 'Categoría eliminada exitosamente',
+      categoryId: id,
+      deletedAt: new Date().toISOString(),
+    };
   }
 
   @Get('stats/summary')
