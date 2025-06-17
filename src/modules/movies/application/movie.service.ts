@@ -67,6 +67,7 @@ export class MovieService {
       search: filters.search,
       page: filters.page,
       limit: filters.limit,
+      sortByReleaseDate: filters.sortByReleaseDate,
     };
 
     const result = await this.movieRepository.findAll(movieFilters);

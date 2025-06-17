@@ -33,6 +33,9 @@
 - **DTOs y validaciones**: Uso intensivo de DTOs, validaciones con class-validator y manejo global de errores
 - **Testing profesional**: Cobertura completa con Jest (unitarios, integración, e2e)
 - **Documentación Swagger**: Documentación interactiva y ejemplos en `/api/docs`
+- **Ordenamiento inteligente**: Películas ordenables por fecha de estreno (asc/desc)
+- **Categorías precargadas**: Script SQL para cargar las 4 categorías requeridas (Terror, Suspenso, Drama, Comedia)
+- **Filtros avanzados**: Búsqueda por título, categoría, género, año, clasificación
 - **CI/CD y despliegue**: Scripts y configuración para despliegue automatizado
 
 ---
@@ -115,7 +118,21 @@ La API cuenta con documentación interactiva y ejemplos en **Swagger**:
   pnpm run typeorm migration:run
   ```
 - **Seeds de datos:**
-  - Incluidos para categorías y datos de prueba
+  
+  **🤖 Automático al iniciar la aplicación:**
+  - Las categorías requeridas (Terror, Suspenso, Drama, Comedia) se cargan automáticamente al iniciar el servidor
+  - Se ejecuta solo una vez por categoría (no duplica datos existentes)
+  - Se muestra en los logs del servidor con emojis informativos
+  
+  **⚙️ Manual con comando npm:**
+  ```bash
+  pnpm run seed
+  ```
+  
+  **📄 Script SQL directo:**
+  ```bash
+  psql -d tu_base_de_datos -f scripts/seed-categories.sql
+  ```
 
 ---
 
@@ -130,8 +147,8 @@ La API cuenta con documentación interactiva y ejemplos en **Swagger**:
   - `GET /users/:userId/movies` — Películas vistas/favoritas por usuario
 - **Películas:**
   - `POST /movies` — Crear película
-  - `GET /movies` — Listar películas (filtros, paginación)
-  - `GET /movies/new-releases` — Novedades
+  - `GET /movies` — Listar películas (filtros, paginación, ordenamiento por fecha)
+  - `GET /movies/new-releases` — Novedades (películas de últimas 3 semanas)
   - `PUT /movies/:id` — Actualizar película
   - `DELETE /movies/:id` — Eliminar película
 - **Categorías:**

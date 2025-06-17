@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './shared/filters/global-exception.filter';
+import { SeedService } from './config/seed.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -47,9 +48,19 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
-  });
+  });  const port = process.env.PORT || 3000;
+  
+  // Ejecutar seeds al iniciar la aplicación (opcional)
+  if (process.env.RUN_SEEDS !== 'false') {
+    try {
+      const seedService = app.get(SeedService);
+      await seedService.runAllSeeds();
+    } catch (error) {
+      console.error('❌ Error ejecutando seeds:', (error as Error).message);
+      // No detenemos la aplicación si falla el seed
+    }
+  }
 
-  const port = process.env.PORT || 3000;
   await app.listen(port);
 
   console.log(`🚀 Application is running on: http://localhost:${port}`);

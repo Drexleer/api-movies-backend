@@ -9,6 +9,7 @@ export interface MovieFilters {
   rating?: string;
   page?: number;
   limit?: number;
+  sortByReleaseDate?: 'asc' | 'desc';
 }
 
 export interface PaginatedResult<T> {

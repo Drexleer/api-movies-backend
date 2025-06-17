@@ -97,6 +97,42 @@ export class UserController {
     });
   }
 
+  @Get('with-movies')
+  @ApiOperation({
+    summary: 'Listar usuarios con sus películas vistas',
+    description:
+      'Retorna todos los usuarios activos con la lista de películas que han visto',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Lista de usuarios con sus películas vistas',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          user: {
+            type: 'object',
+            properties: {
+              id: { type: 'number', example: 1 },
+              firstName: { type: 'string', example: 'Juan' },
+              lastName: { type: 'string', example: 'Pérez' },
+              email: { type: 'string', example: 'juan@example.com' },
+              fullName: { type: 'string', example: 'Juan Pérez' },
+            },
+          },
+          movies: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/UserMovieResponseDto' },
+          },
+        },
+      },
+    },
+  })
+  async getUsersWithMovies(): Promise<any[]> {
+    return await this.userService.getUsersWithMovies();
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: 'Obtener usuario por ID',
@@ -291,41 +327,5 @@ export class UserController {
     return await this.userService.getUserMovies(userId, {
       onlyFavorites: onlyFavorites === true,
     });
-  }
-
-  @Get('with-movies')
-  @ApiOperation({
-    summary: 'Listar usuarios con sus películas vistas',
-    description:
-      'Retorna todos los usuarios activos con la lista de películas que han visto',
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Lista de usuarios con sus películas vistas',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          user: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 1 },
-              firstName: { type: 'string', example: 'Juan' },
-              lastName: { type: 'string', example: 'Pérez' },
-              email: { type: 'string', example: 'juan@example.com' },
-              fullName: { type: 'string', example: 'Juan Pérez' },
-            },
-          },
-          movies: {
-            type: 'array',
-            items: { $ref: '#/components/schemas/UserMovieResponseDto' },
-          },
-        },
-      },
-    },
-  })
-  async getUsersWithMovies(): Promise<any[]> {
-    return await this.userService.getUsersWithMovies();
   }
 }

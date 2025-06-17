@@ -118,6 +118,15 @@ export class MovieController {
     description: 'Número de elementos por página (por defecto: 10)',
     example: 10,
   })
+  @ApiQuery({
+    name: 'sortByReleaseDate',
+    required: false,
+    type: String,
+    description:
+      'Ordenar por fecha de estreno (asc: más antigua primero, desc: más reciente primero)',
+    example: 'desc',
+    enum: ['asc', 'desc'],
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Lista de películas obtenida exitosamente',

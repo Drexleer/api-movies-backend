@@ -92,8 +92,9 @@ export class MovieRepository implements IMovieRepository {
       });
     }
 
-    // Ordenar por fecha de estreno (más reciente primero)
-    queryBuilder.orderBy('movie.releaseDate', 'DESC');
+    // Ordenar por fecha de estreno
+    const sortOrder = filters.sortByReleaseDate === 'asc' ? 'ASC' : 'DESC';
+    queryBuilder.orderBy('movie.releaseDate', sortOrder);
 
     // Paginación
     const page = filters.page || 1;

@@ -50,7 +50,7 @@ export class CreateUserDto {
 
   @ApiPropertyOptional({
     description: 'Número de teléfono del usuario',
-    example: '+57 300 123 4567',
+    example: '+573001234567',
   })
   @IsOptional()
   @IsPhoneNumber('CO', { message: 'Debe ser un número de teléfono válido' })

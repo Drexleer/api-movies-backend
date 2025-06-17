@@ -88,4 +88,14 @@ export class MovieFiltersDto {
   @Max(100, { message: 'El límite debe ser máximo 100' })
   @Type(() => Number)
   limit?: number = 10;
+
+  @ApiPropertyOptional({
+    description: 'Ordenar por fecha de estreno',
+    example: 'desc',
+    enum: ['asc', 'desc'],
+    default: 'desc',
+  })
+  @IsOptional()
+  @IsString({ message: 'El orden debe ser una cadena de texto' })
+  sortByReleaseDate?: 'asc' | 'desc' = 'desc';
 }
