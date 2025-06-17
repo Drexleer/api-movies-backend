@@ -1,0 +1,334 @@
+### API Movies Backend - REST Client Tests
+### Base URL
+@baseUrl = http://localhost:3000
+
+###############################################################################
+# HEALTH CHECK
+###############################################################################
+
+### Health Check
+GET {{baseUrl}}/
+
+###############################################################################
+# USERS ENDPOINTS
+###############################################################################
+
+### 1. Create User
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "firstName": "Ana",
+  "lastName": "González",
+  "email": "ana.gonzalez@example.com",
+  "password": "SecurePass123!",
+  "phoneNumber": "+57 300 555 1234",
+  "dateOfBirth": "1995-03-15",
+  "avatar": "https://example.com/ana-avatar.jpg"
+}
+
+### 2. Get All Users (with pagination)
+GET {{baseUrl}}/users?page=1&limit=10
+
+### 3. Get All Users (no pagination)
+GET {{baseUrl}}/users
+
+### 4. Get User by ID
+GET {{baseUrl}}/users/1
+
+### 5. Update User
+PUT {{baseUrl}}/users/1
+Content-Type: application/json
+
+{
+  "firstName": "Ana María",
+  "lastName": "González Leon",
+  "phoneNumber": "+573012446357",
+  "dateOfBirth": "1995-03-20"
+}
+
+### 6. Delete User (soft delete)
+DELETE {{baseUrl}}/users/1
+
+### 7. Mark Movie as Viewed
+POST {{baseUrl}}/users/1/movies/1/mark-viewed
+Content-Type: application/json
+
+{
+  "rating": 4,
+  "review": "Excelente película, muy recomendada",
+  "isFavorite": true,
+  "watchTime": 120,
+  "completedMovie": true
+}
+
+### 8. Get User's Viewed Movies
+GET {{baseUrl}}/users/1/movies?page=1&limit=5
+
+### 9. Get User's Viewed Movies (only favorites)
+GET {{baseUrl}}/users/1/movies?onlyFavorites=true
+
+### 10. Get Users with Their Viewed Movies
+GET {{baseUrl}}/users/with-movies?page=1&limit=5
+
+###############################################################################
+# MOVIES ENDPOINTS
+###############################################################################
+
+### 11. Create Movie
+POST {{baseUrl}}/movies
+Content-Type: application/json
+
+{
+  "title": "El Padrino",
+  "description": "Una obra maestra del cine que narra la historia de una familia mafiosa",
+  "synopsis": "Don Vito Corleone es el patriarca de una de las cinco familias que dominan el crimen organizado en Nueva York...",
+  "releaseDate": "1972-03-24",
+  "duration": 175,
+  "rating": "R",
+  "director": "Francis Ford Coppola",
+  "cast": ["Marlon Brando", "Al Pacino", "James Caan"],
+  "genres": ["Drama", "Crimen"],
+  "country": "Estados Unidos",
+  "language": "Inglés",
+  "categoryId": 1,
+  "imdbRating": 9.2,
+  "poster": "https://example.com/godfather-poster.jpg",
+  "trailer": "https://youtube.com/watch?v=godfather-trailer"
+}
+
+### 12. Get All Movies (with pagination)
+GET {{baseUrl}}/movies?page=1&limit=10
+
+### 13. Get All Movies (with filters)
+GET {{baseUrl}}/movies?genre=Drama&year=1972&rating=R&page=1&limit=5
+
+### 14. Search Movies
+GET {{baseUrl}}/movies?search=Padrino&page=1&limit=5
+
+### 15. Get Movies by Category
+GET {{baseUrl}}/movies?categoryId=1&page=1&limit=10
+
+### 16. Get Movie by ID
+GET {{baseUrl}}/movies/1
+
+### 17. Update Movie
+PUT {{baseUrl}}/movies/1
+Content-Type: application/json
+
+{
+  "title": "El Padrino (Remasterizada)",
+  "imdbRating": 9.3,
+  "description": "Una obra maestra del cine remasterizada en 4K"
+}
+
+### 18. Delete Movie
+DELETE {{baseUrl}}/movies/1
+
+### 19. Get New Releases (< 3 weeks)
+GET {{baseUrl}}/movies/new-releases
+
+### 20. Get Movie Categories (from movies endpoint)
+GET {{baseUrl}}/movies/categories
+
+###############################################################################
+# CATEGORIES ENDPOINTS
+###############################################################################
+
+### 21. Create Category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Ciencia Ficción",
+  "description": "Películas que exploran conceptos futuristas y tecnológicos"
+}
+
+### 22. Get All Categories
+GET {{baseUrl}}/categories
+
+### 23. Get Category by ID
+GET {{baseUrl}}/categories/1
+
+### 24. Update Category
+PUT {{baseUrl}}/categories/1
+Content-Type: application/json
+
+{
+  "name": "Ciencia Ficción Épica",
+  "description": "Películas de ciencia ficción con grandes producciones y efectos especiales"
+}
+
+### 25. Delete Category
+DELETE {{baseUrl}}/categories/1
+
+### 26. Get Category Statistics
+GET {{baseUrl}}/categories/stats/summary
+
+###############################################################################
+# ERROR TESTING
+###############################################################################
+
+### 27. Test 404 - User Not Found
+GET {{baseUrl}}/users/99999
+
+### 28. Test 404 - Movie Not Found
+GET {{baseUrl}}/movies/99999
+
+### 29. Test 404 - Category Not Found
+GET {{baseUrl}}/categories/99999
+
+### 30. Test 400 - Invalid User Data
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "Test",
+  "email": "invalid-email",
+  "password": "123"
+}
+
+### 31. Test 400 - Invalid Movie Data
+POST {{baseUrl}}/movies
+Content-Type: application/json
+
+{
+  "title": "",
+  "duration": -10,
+  "categoryId": "invalid"
+}
+
+### 32. Test 400 - Invalid Category Data
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "",
+  "description": ""
+}
+
+### 33. Test 409 - Duplicate Email
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "firstName": "Test",
+  "lastName": "User",
+  "email": "ana.gonzalez@example.com",
+  "password": "SecurePass123!"
+}
+
+### 34. Test 409 - Duplicate Category Name
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Ciencia Ficción"
+}
+
+###############################################################################
+# PAGINATION TESTING
+###############################################################################
+
+### 35. Test Pagination - Page 1
+GET {{baseUrl}}/users?page=1&limit=2
+
+### 36. Test Pagination - Page 2
+GET {{baseUrl}}/users?page=2&limit=2
+
+### 37. Test Pagination - Large Limit
+GET {{baseUrl}}/movies?page=1&limit=100
+
+### 38. Test Pagination - Invalid Page
+GET {{baseUrl}}/users?page=-1&limit=10
+
+###############################################################################
+# COMPLEX QUERIES
+###############################################################################
+
+### 39. Complex Movie Filter
+GET {{baseUrl}}/movies?genre=Drama&year=1972&rating=R&search=Padrino&categoryId=1&page=1&limit=5
+
+### 40. User Movies with Filters
+GET {{baseUrl}}/users/1/movies?onlyFavorites=true&page=1&limit=10
+
+### 41. Users with Movies Pagination
+GET {{baseUrl}}/users/with-movies?page=1&limit=3
+
+###############################################################################
+# SWAGGER DOCUMENTATION
+###############################################################################
+
+### 42. Access Swagger Documentation
+GET {{baseUrl}}/api/docs
+
+###############################################################################
+# SAMPLE DATA CREATION SEQUENCE
+###############################################################################
+
+### 43. Create Sample Category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Acción",
+  "description": "Películas llenas de acción y aventura"
+}
+
+### 44. Create Sample Movie with Category
+POST {{baseUrl}}/movies
+Content-Type: application/json
+
+{
+  "title": "John Wick",
+  "description": "Un asesino retirado busca venganza",
+  "synopsis": "John Wick es un ex-asesino a sueldo que regresa para vengarse...",
+  "releaseDate": "2014-10-24",
+  "duration": 101,
+  "rating": "R",
+  "director": "Chad Stahelski",
+  "cast": ["Keanu Reeves", "Michael Nyqvist"],
+  "genres": ["Acción", "Thriller"],
+  "country": "Estados Unidos",
+  "language": "Inglés",
+  "categoryId": 1,
+  "imdbRating": 7.4,
+  "poster": "https://example.com/john-wick-poster.jpg",
+  "trailer": "https://youtube.com/watch?v=john-wick-trailer"
+}
+
+### 45. Create Sample User
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "firstName": "Carlos",
+  "lastName": "Mendoza",
+  "email": "carlos.mendoza@example.com",
+  "password": "SecurePass456!",
+  "phoneNumber": "+57 300 555 5678",
+  "dateOfBirth": "1988-12-10",
+  "avatar": "https://example.com/carlos-avatar.jpg"
+}
+
+### 46. User Marks Movie as Viewed
+POST {{baseUrl}}/users/2/movies/2/mark-viewed
+Content-Type: application/json
+
+{
+  "rating": 5,
+  "review": "Increíble película de acción, Keanu Reeves es espectacular",
+  "isFavorite": true,
+  "watchTime": 101,
+  "completedMovie": true
+}
+
+###############################################################################
+# NOTES:
+# - Replace {{baseUrl}} with your actual API base URL if different
+# - Update user/movie/category IDs based on your actual data
+# - Some endpoints may require authentication in a real production environment
+# - Test error scenarios to validate proper error handling
+# - Use pagination parameters to test large datasets
+###############################################################################
