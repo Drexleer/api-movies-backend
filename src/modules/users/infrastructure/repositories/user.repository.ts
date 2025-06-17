@@ -114,7 +114,7 @@ export class UserRepository implements IUserRepository {
       entity.email,
       entity.password,
       entity.phoneNumber,
-      entity.dateOfBirth,
+      entity.dateOfBirth ? new Date(entity.dateOfBirth) : undefined,
       entity.avatar,
       entity.isActive,
       entity.createdAt,

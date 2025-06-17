@@ -62,9 +62,18 @@ export class Movie {
   }
 
   isNew(): boolean {
+    // Asegurar que releaseDate es un objeto Date válido
+    const releaseDate =
+      this.releaseDate instanceof Date
+        ? this.releaseDate
+        : new Date(this.releaseDate);
+
+    // Verificar que la fecha es válida
+    if (isNaN(releaseDate.getTime())) return false;
+
     const threeWeeksAgo = new Date();
     threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21);
-    return this.releaseDate > threeWeeksAgo;
+    return releaseDate > threeWeeksAgo;
   }
 
   get durationFormatted(): string {
@@ -78,8 +87,17 @@ export class Movie {
   }
 
   get isClassic(): boolean {
+    // Asegurar que releaseDate es un objeto Date válido
+    const releaseDate =
+      this.releaseDate instanceof Date
+        ? this.releaseDate
+        : new Date(this.releaseDate);
+
+    // Verificar que la fecha es válida
+    if (isNaN(releaseDate.getTime())) return false;
+
     const currentYear = new Date().getFullYear();
-    const movieYear = this.releaseDate.getFullYear();
+    const movieYear = releaseDate.getFullYear();
     return currentYear - movieYear >= 25;
   }
 }

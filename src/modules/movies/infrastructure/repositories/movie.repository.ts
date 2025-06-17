@@ -74,6 +74,24 @@ export class MovieRepository implements IMovieRepository {
       });
     }
 
+    if (filters.genre) {
+      queryBuilder.andWhere(':genre = ANY(movie.genres)', {
+        genre: filters.genre,
+      });
+    }
+
+    if (filters.year) {
+      queryBuilder.andWhere('EXTRACT(YEAR FROM movie.releaseDate) = :year', {
+        year: filters.year,
+      });
+    }
+
+    if (filters.rating) {
+      queryBuilder.andWhere('movie.rating = :rating', {
+        rating: filters.rating,
+      });
+    }
+
     // Ordenar por fecha de estreno (más reciente primero)
     queryBuilder.orderBy('movie.releaseDate', 'DESC');
 
@@ -146,12 +164,18 @@ export class MovieRepository implements IMovieRepository {
   }
 
   private mapEntityToDomain(entity: MovieEntity): Movie {
+    // Convertir releaseDate de forma defensiva
+    const releaseDate =
+      entity.releaseDate instanceof Date
+        ? entity.releaseDate
+        : new Date(entity.releaseDate);
+
     return new Movie(
       entity.id,
       entity.title,
       entity.description,
       entity.synopsis,
-      entity.releaseDate,
+      releaseDate,
       entity.duration,
       entity.rating,
       entity.director,

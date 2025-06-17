@@ -43,12 +43,22 @@ export class User {
 
   get age(): number | null {
     if (!this.dateOfBirth) return null;
+
+    // Asegurar que dateOfBirth es un objeto Date válido
+    const birthDate =
+      this.dateOfBirth instanceof Date
+        ? this.dateOfBirth
+        : new Date(this.dateOfBirth);
+
+    // Verificar que la fecha es válida
+    if (isNaN(birthDate.getTime())) return null;
+
     const today = new Date();
-    let age = today.getFullYear() - this.dateOfBirth.getFullYear();
-    const monthDiff = today.getMonth() - this.dateOfBirth.getMonth();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
     if (
       monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < this.dateOfBirth.getDate())
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
     ) {
       age--;
     }
