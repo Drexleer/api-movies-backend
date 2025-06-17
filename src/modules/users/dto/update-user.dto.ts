@@ -65,7 +65,7 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @IsDateString({}, { message: 'La fecha de nacimiento debe ser válida' })
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
 
   @ApiPropertyOptional({
     description: 'URL del avatar del usuario',
