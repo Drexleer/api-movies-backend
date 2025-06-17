@@ -1,10 +1,10 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import {
   IMovieRepository,
-  ICategoryRepository,
   MovieFilters,
   PaginatedResult,
 } from '../domain/repositories/movie.repository.interface';
+import { CategoryRepositoryInterface } from '../domain/repositories/category.repository.interface';
 import { Movie } from '../domain/movie.entity';
 import { Category } from '../domain/category.entity';
 import { CreateMovieDto } from '../dto/create-movie.dto';
@@ -19,8 +19,8 @@ export class MovieService {
   constructor(
     @Inject('IMovieRepository')
     private readonly movieRepository: IMovieRepository,
-    @Inject('ICategoryRepository')
-    private readonly categoryRepository: ICategoryRepository,
+    @Inject('CategoryRepositoryInterface')
+    private readonly categoryRepository: CategoryRepositoryInterface,
   ) {}
 
   async createMovie(createMovieDto: CreateMovieDto): Promise<MovieResponseDto> {
@@ -29,7 +29,9 @@ export class MovieService {
       createMovieDto.categoryId,
     );
     if (!category) {
-      throw new Error('Category not found');
+      throw new NotFoundException(
+        `Category with ID ${createMovieDto.categoryId} not found`,
+      );
     }
 
     const movie = Movie.create(
@@ -86,7 +88,7 @@ export class MovieService {
   async findMovieById(id: number): Promise<MovieResponseDto> {
     const movie = await this.movieRepository.findById(id);
     if (!movie) {
-      throw new Error('Movie not found');
+      throw new NotFoundException(`Movie with ID ${id} not found`);
     }
     return this.mapMovieToResponseDto(movie);
   }
@@ -97,7 +99,7 @@ export class MovieService {
   ): Promise<MovieResponseDto> {
     const existingMovie = await this.movieRepository.findById(id);
     if (!existingMovie) {
-      throw new Error('Movie not found');
+      throw new NotFoundException(`Movie with ID ${id} not found`);
     }
 
     // Si se está actualizando la categoría, validar que existe
@@ -106,7 +108,9 @@ export class MovieService {
         updateMovieDto.categoryId,
       );
       if (!category) {
-        throw new Error('Category not found');
+        throw new NotFoundException(
+          `Category with ID ${updateMovieDto.categoryId} not found`,
+        );
       }
     }
 
@@ -141,7 +145,7 @@ export class MovieService {
   async deleteMovie(id: number): Promise<void> {
     const movie = await this.movieRepository.findById(id);
     if (!movie) {
-      throw new Error('Movie not found');
+      throw new NotFoundException(`Movie with ID ${id} not found`);
     }
     await this.movieRepository.delete(id);
   }
@@ -244,7 +248,7 @@ export class MovieService {
   async findById(id: number): Promise<Movie> {
     const movie = await this.movieRepository.findById(id);
     if (!movie) {
-      throw new Error('Movie not found');
+      throw new NotFoundException(`Movie with ID ${id} not found`);
     }
     return movie;
   }

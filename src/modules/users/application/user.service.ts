@@ -1,4 +1,9 @@
-import { Injectable, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import {
   IUserRepository,
@@ -37,7 +42,7 @@ export class UserService {
       createUserDto.email,
     );
     if (existingUser) {
-      throw new Error('Email already exists');
+      throw new ConflictException('Email already exists');
     }
 
     // Encriptar contraseña
@@ -62,7 +67,7 @@ export class UserService {
   async findUserById(id: number): Promise<UserResponseDto> {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
     return this.mapUserToResponseDto(user);
   }
@@ -96,7 +101,7 @@ export class UserService {
   ): Promise<UserResponseDto> {
     const existingUser = await this.userRepository.findById(id);
     if (!existingUser) {
-      throw new Error('User not found');
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
 
     // Si se actualiza el email, verificar que no exista otro usuario con ese email
@@ -105,18 +110,31 @@ export class UserService {
         updateUserDto.email,
       );
       if (userWithEmail) {
-        throw new Error('Email already exists');
+        throw new ConflictException('Email already exists');
       }
     }
 
-    const updatedUser = await this.userRepository.update(id, updateUserDto);
+    // Convertir DTO a objeto de dominio parcial
+    const updateData: Partial<User> = {
+      firstName: updateUserDto.firstName,
+      lastName: updateUserDto.lastName,
+      email: updateUserDto.email,
+      phoneNumber: updateUserDto.phoneNumber,
+      dateOfBirth: updateUserDto.dateOfBirth
+        ? new Date(updateUserDto.dateOfBirth)
+        : undefined,
+      avatar: updateUserDto.avatar,
+      isActive: updateUserDto.isActive,
+    };
+
+    const updatedUser = await this.userRepository.update(id, updateData);
     return this.mapUserToResponseDto(updatedUser);
   }
 
   async deleteUser(id: number): Promise<void> {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
     await this.userRepository.delete(id);
   }
@@ -135,7 +153,9 @@ export class UserService {
       movieId,
     );
     if (existingUserMovie) {
-      throw new Error('Movie already marked as viewed by this user');
+      throw new ConflictException(
+        'Movie already marked as viewed by this user',
+      );
     }
 
     const userMovie = UserMovie.create(
@@ -236,7 +256,7 @@ export class UserService {
   async findById(id: number): Promise<User> {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
     return user;
   }
