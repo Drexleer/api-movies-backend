@@ -2,8 +2,11 @@ import { Movie } from '../movie.entity';
 import { Category } from '../category.entity';
 
 export interface MovieFilters {
-  title?: string;
+  search?: string;
   categoryId?: number;
+  genre?: string;
+  year?: number;
+  rating?: string;
   page?: number;
   limit?: number;
 }

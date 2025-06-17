@@ -1,30 +1,16 @@
 import {
-  IsNotEmpty,
+  IsOptional,
   IsNumber,
   IsInt,
   IsPositive,
-  IsOptional,
   Min,
   Max,
   IsString,
   IsBoolean,
 } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class MarkMovieAsViewedDto {
-  @ApiProperty({
-    description: 'ID de la película a marcar como vista',
-    example: 1,
-    minimum: 1,
-  })
-  @IsNotEmpty({ message: 'El ID de la película es requerido' })
-  @IsNumber({}, { message: 'El ID de la película debe ser un número' })
-  @IsInt({ message: 'El ID de la película debe ser un número entero' })
-  @IsPositive({ message: 'El ID de la película debe ser un número positivo' })
-  @Type(() => Number)
-  movieId: number;
-
   @ApiPropertyOptional({
     description: 'Calificación del usuario para la película (1-5 estrellas)',
     example: 4,

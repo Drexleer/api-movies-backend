@@ -11,12 +11,12 @@ import { Type } from 'class-transformer';
 
 export class MovieFiltersDto {
   @ApiPropertyOptional({
-    description: 'Filtrar por título de la película',
+    description: 'Buscar por título, descripción o director',
     example: 'Padrino',
   })
   @IsOptional()
-  @IsString({ message: 'El título debe ser una cadena de texto' })
-  title?: string;
+  @IsString({ message: 'La búsqueda debe ser una cadena de texto' })
+  search?: string;
 
   @ApiPropertyOptional({
     description: 'Filtrar por ID de categoría',
@@ -29,6 +29,37 @@ export class MovieFiltersDto {
   @Min(1, { message: 'La categoría debe ser un número positivo' })
   @Type(() => Number)
   categoryId?: number;
+
+  @ApiPropertyOptional({
+    description: 'Filtrar por género',
+    example: 'Drama',
+  })
+  @IsOptional()
+  @IsString({ message: 'El género debe ser una cadena de texto' })
+  genre?: string;
+
+  @ApiPropertyOptional({
+    description: 'Filtrar por año de estreno',
+    example: 1972,
+    minimum: 1900,
+    maximum: 2030,
+  })
+  @IsOptional()
+  @IsNumber({}, { message: 'El año debe ser un número' })
+  @IsInt({ message: 'El año debe ser un número entero' })
+  @Min(1900, { message: 'El año debe ser mayor a 1900' })
+  @Max(2030, { message: 'El año debe ser menor a 2030' })
+  @Type(() => Number)
+  year?: number;
+
+  @ApiPropertyOptional({
+    description: 'Filtrar por clasificación',
+    example: 'R',
+    enum: ['G', 'PG', 'PG-13', 'R', 'NC-17', 'TE', 'T', '+13', '+16', '+18'],
+  })
+  @IsOptional()
+  @IsString({ message: 'La clasificación debe ser una cadena de texto' })
+  rating?: string;
 
   @ApiPropertyOptional({
     description: 'Número de página',
