@@ -28,12 +28,8 @@ import { CategoryModule } from './category.module';
       provide: 'IMovieRepository',
       useClass: MovieRepository,
     },
-    {
-      provide: 'ICategoryRepository',
-      useClass: MovieRepository, // MovieRepository implementa ambas interfaces
-    },
   ],
   controllers: [MovieController],
-  exports: [MovieService, 'IMovieRepository', 'ICategoryRepository'],
+  exports: [MovieService, 'IMovieRepository'],
 })
 export class MovieModule {}
